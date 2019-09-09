@@ -1,0 +1,208 @@
+##################################################################################################
+#  service a
+##################################################################################################
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: service-a
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-a
+  labels:
+    app: service-a
+spec:
+  ports:
+  - port: 8081
+    name: http
+  selector:
+    app: service-a
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: service-a-v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: service-a
+        version: v1
+    spec:
+      serviceAccountName: service-a
+      containers:
+      - name: service-a
+        image: menghot/service-a:0.0.1
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;" ]
+        imagePullPolicy: Never
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            memory: 64Mi
+        env:
+        - name: JAVA_OPTS
+          value: " -Xmx64m -Dservice.b.url=http://service-b:8082/sb/info -Dapp.version=v1"
+        ports:
+        - containerPort: 8081
+---
+##################################################################################################
+#  service b
+##################################################################################################
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: service-b
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-b
+  labels:
+    app: service-b
+spec:
+  ports:
+  - port: 8082
+    name: http
+  selector:
+    app: service-b
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: service-b-v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: service-b
+        version: v1
+    spec:
+      serviceAccountName: service-b
+      containers:
+      - name: service-b
+        image: menghot/service-b:0.0.1
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;" ]
+        imagePullPolicy: Never
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            memory: 64Mi
+        env:
+        - name: JAVA_OPTS
+          value: " -Xmx64m -Dapp.version=v1"
+        ports:
+        - containerPort: 8082
+---
+##################################################################################################
+# Service-c service
+##################################################################################################
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: service-c
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-c
+  labels:
+    app: service-c
+spec:
+  ports:
+  - port: 8083
+    name: http
+  selector:
+    app: service-c
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: service-c-v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: service-c
+        version: v1
+    spec:
+      serviceAccountName: service-c
+      containers:
+      - name: service-c
+        image: menghot/service-c:0.0.1
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;" ]
+        imagePullPolicy: Never
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            memory: 64Mi
+        env:
+        - name: JAVA_OPTS
+          value: " -Xmx64m -Dapp.version=v1"
+        ports:
+        - containerPort: 8083
+---
+##################################################################################################
+# Portal services
+##################################################################################################
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: portal
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portal
+  labels:
+    app: portal
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    nodePort: 30332
+    name: http
+  selector:
+    app: portal
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: portal-v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: portal
+        version: v1
+    spec:
+      serviceAccountName: portal
+      containers:
+      - name: portal
+        image: menghot/portal:0.0.1
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "while true; do sleep 30; done;" ]
+        imagePullPolicy: Never
+        resources:
+          limits:
+            memory: 256Mi
+          requests:
+            memory: 64Mi
+        env:
+        - name: JAVA_OPTS
+          value: " -Xmx64m -Dservice.a.url=http://service-a:8081/sa/info -Dservice.c.url=http://service-c:8083/sc/info"
+        ports:
+        - containerPort: 8080
+          
+---
+
