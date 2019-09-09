@@ -203,8 +203,10 @@ metadata:
   labels:
     app: portal
 spec:
+  type: NodePort
   ports:
   - port: 8080
+    nodePort: 30332
     name: http
   selector:
     app: portal
