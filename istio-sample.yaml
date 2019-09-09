@@ -235,10 +235,8 @@ spec:
         env:
         - name: JAVA_OPTS
           value: " -Xmx64m -Dservice.a.url=http://service-a:8081/sa/info -Dservice.c.url=http://service-c:8083/sc/info"
-        type: NodePort  
         ports:
         - containerPort: 8080
-          nodePort: 30332
           
 ---
 #####################################################################################################
