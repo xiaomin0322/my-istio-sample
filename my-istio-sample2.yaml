@@ -32,7 +32,7 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: service-a
+  name: bookinfo-service-a
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -53,7 +53,7 @@ spec:
         app: service-a
         version: v1
     spec:
-      serviceAccountName: service-a
+      serviceAccountName: bookinfo-service-a
       containers:
       - name: service-a
         image: menghot/service-a:0.0.1
@@ -91,7 +91,7 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: service-b
+  name: bookinfo-service-b
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -112,7 +112,7 @@ spec:
         app: service-b
         version: v1
     spec:
-      serviceAccountName: service-b
+      serviceAccountName: bookinfo-service-b
       containers:
       - name: service-b
         image: menghot/service-b:0.0.1
