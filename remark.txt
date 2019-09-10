@@ -1,0 +1,138 @@
+================istio 1.2.5 目前架构的差异===================
+1.服务发现路由 ： VirtualService
+2.hystrix断路器: DestinationRule （一起用）
+3.spring cloud sleuth + zipkin clinet : spring cloud sleuth + restTemplate + （扩展）
+3.Grafana 应用http指标，tcp指标 : SideCar metrics  
+4.efk 通过自定义收集应用日志(用自己的一套)
+
+================1.2.5踩坑计==================
+1. helm安装裁坑。tiller 镜像拉不下来
+2./root/istio-1.2.5/install/kubernetes/helm/istio/charts/tracing/values.yaml 需要改镜像文件
+3.访问都配置成nodeprot:kubectl edit svc tracing -n istio-system
+4.加入自己得配置时： upstream connect error or disconnect/reset before headers. reset reason: connection failure 
+
+
+
+====================istio===========================================
+
+kubectl get svc -n istio-system -o wide
+ 
+kubectl get pod -n istio-system -o wide  
+   
+   
+http://ip:31380/productpage   
+
+
+http://ip:15032
+
+
+
+
+
+
+kubectl get ingress -n istio-system istio-tracing -o yaml
+
+kubectl get pod --all-namespaces
+
+kubectl get deployment -n istio-system -o wide  
+
+
+kubectl edit deployment istio-tracing -n istio-system
+
+
+kubectl edit deployment istio-telemetry -n istio-system
+
+kubectl delete deployment  -n istio-system
+
+kubectl delete pod  tiller-deploy-7f4d76c4b6-svrbw  --namespace=kube-system
+
+
+kubectl describe pod  tiller-deploy-7f4d76c4b6-svrbw    --namespace="istio-system"
+
+kubectl edit deployment tiller-deploy -n kube-system
+
+docker pull fishead/gcr.io.kubernetes-helm.tiller:v2.12.3
+
+docker tag  jessestuart/tiller:v2.14.3 gcr.io/kubernetes-helm/tiller:v2.14.3
+
+helm init --service-account tiller --tiller-image gcr.io/kubernetes-helm/tiller:v2.14.3 --skip-refresh
+
+helm init --tiller-image=jessestuart/tiller:v2.14.3 --service-account tiller --skip-refresh
+
+
+
+kubectl get deploy --namespace="istio-system"
+-----------------------------
+helm template install/kubernetes/helm/istio  --name istio --namespace istio-system | kubectl apply -f -
+
+kubectl get gateway
+
+
+kubectl get gateway
+
+dominos.tracing.com:31380/jaeger
+
+dominos.tracing.com:31380/zipkin
+
+ kubectl apply -f <(istioctl kube-inject -f /root/istio-1.2.5/samples/bookinfo/platform/kube/bookinfo.yaml)
+
+ 
+kubectl apply -f  /root/istio-1.2.5/samples/bookinfo/platform/kube/bookinfo.yaml
+
+kubectl delete -f  /root/istio-1.2.5/samples/bookinfo/platform/kube/bookinfo.yaml
+
+
+uquote/jdk8-tomee1.7.3-plume
+ 
+for ((i=1; i<=200; i ++))
+do
+	 curl http://ip:31380/productpage
+done
+
+
+for ((i=1; i<=200; i ++))
+do
+	 curl http://ip:31380/sa/info
+done
+
+docker pull 	
+
+docker build --build-arg JAR_FILE=service-a.jar -t menghot/service-a:0.0.1 .
+
+docker build --build-arg JAR_FILE=service-b.jar -t menghot/service-b:0.0.1 .
+
+kubectl apply -f  istio-sample.yaml
+
+kubectl apply -f    istio-route-rule-all-v1.yaml
+
+--set global.configValidation=false
+
+http://ip:30332/portal/info
+
+
+http://ip:31380/sa/info
+
+
+vim  /root/istio-1.2.5/samples/bookinfo/networking/bookinfo-gateway.yaml
+
+
+
+kubectl apply -f /root/istio-1.2.5/samples/bookinfo/networking/bookinfo-gateway.yaml
+
+
+kubectl apply -f <(/root/istio-1.2.5/bin/istioctl kube-inject -f /root/my-istio-sample3.yaml)
+ 
+ 
+
+apk add --update curl
+
+/usr/bin/curl www.baidu.com
+
+
+kubectl delete meshpolicy default
+
+
+curl -s -v  10.108.109.152:8081/sa/info
+
+
+find .|xargs grep -ri "mtls" -l 
