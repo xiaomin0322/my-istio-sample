@@ -1,4 +1,4 @@
-FROM anapsix/alpine-java:8u172b11_jdk
+FROM uquote/jdk8-tomee1.7.3-plume
 
 MAINTAINER Simon Meng <menghot@gmail.com>
 
