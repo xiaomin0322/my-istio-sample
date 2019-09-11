@@ -44,8 +44,9 @@ public class ServiceController {
     public void addSpan() {
     	Span currentSpan = tracer.getCurrentSpan();
 		if (currentSpan == null) {
-			return;
+			currentSpan = tracer.createSpan("addMethod");
 		}
+		log.info("currentSpan >>>> {}",currentSpan);
 		currentSpan.tag("http.method", "zzm");
 		currentSpan.tag("pod.name", "asdasd");
     }

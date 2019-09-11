@@ -155,3 +155,8 @@ done
 
 6.看zipkin链路（开通zipkin）
 http://tracing.com:30081/zipkin
+
+===========查看日志========================
+kubectl logs service-a-7779b55b9b-4qdv2  -c  service-a
+
+
