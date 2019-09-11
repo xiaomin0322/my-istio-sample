@@ -7,7 +7,7 @@ server:
 
 service:
   b:
-    url: "http://localhost:8082/sb/info"
+    url: "http://service-b:8082/sb/info"
     method: "post"
 
 app:
