@@ -51,8 +51,8 @@ spec:
       containers:
       - name: service-a
         image: menghot/service-a:0.0.1
-        command: [ "/bin/bash", "-c", "--" ]
-        args: [ "while true; do sleep 30; done;" ]
+        #command: [ "/bin/bash", "-c", "--" ]
+        #args: [ "while true; do sleep 30; done;" ]
         imagePullPolicy: Never
         resources:
           limits:
@@ -60,8 +60,8 @@ spec:
           requests:
             memory: 64Mi
         env:
-        - name: JAVA_OPTS
-          value: " -Xmx64m -Dservice.b.url=http://service-b:8082/sb/info -Dapp.version=v1"
+        #- name: JAVA_OPTS
+        #  value: " -Xmx64m -Dservice.b.url=http://service-b:8082/sb/info -Dapp.version=v1"
         ports:
         - containerPort: 8081
 ---
@@ -104,17 +104,17 @@ spec:
       containers:
       - name: service-b
         image: menghot/service-b:0.0.1
-        command: [ "/bin/bash", "-c", "--" ]
-        args: [ "while true; do sleep 30; done;" ]
+        #command: [ "/bin/bash", "-c", "--" ]
+        #args: [ "while true; do sleep 30; done;" ]
         imagePullPolicy: Never
         resources:
           limits:
             memory: 256Mi
           requests:
             memory: 64Mi
-        env:
-        - name: JAVA_OPTS
-          value: " -Xmx64m -Dservice.b.url=http://service-b:8082/sb/info -Dapp.version=v1"
+        #env:
+        #- name: JAVA_OPTS
+        #  value: " -Xmx64m -Dservice.b.url=http://service-b:8082/sb/info -Dapp.version=v1"
         ports:
         - containerPort: 8082
 ---

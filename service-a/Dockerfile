@@ -27,3 +27,5 @@ EXPOSE 8081
 ENTRYPOINT ["java","-Duser.timezone=GMT+08","-Djava.security.egd=file:/dev/./urandom"]
 CMD ["-jar","/work/app.jar"]
 
+
+#java -Xmx64m -Dservice.b.url=http://service-b:8082/sb/info -Dapp.version=v1 -Duser.timezone=GMT+08 -Djava.security.egd=file:/dev/./urandom  -jar work/app.jar
