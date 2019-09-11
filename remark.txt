@@ -1,7 +1,7 @@
 ================istio 1.2.5 目前架构的差异===================
 1.服务发现路由 ： VirtualService
 2.hystrix断路器: DestinationRule （一起用）
-3.spring cloud sleuth + zipkin clinet : spring cloud sleuth + restTemplate + （扩展）
+3.spring cloud sleuth + zipkin clinet : istio + spring cloud sleuth + restTemplate + （扩展） (代码里面还得连接zipkin还不如直接用zipkin)
 3.Grafana 应用http指标，tcp指标 : SideCar metrics  
 4.efk 通过自定义收集应用日志(用自己的一套)
 
