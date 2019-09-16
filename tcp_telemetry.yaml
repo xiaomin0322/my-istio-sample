@@ -1,0 +1,65 @@
+# 配置一个指标，描述从服务器发送到客户端的字节数量
+apiVersion: "config.istio.io/v1alpha2"
+kind: metric
+metadata:
+  name: mongosentbytes
+  namespace: default
+spec:
+  value: connection.sent.bytes | 0 # uses a TCP-specific attribute
+  dimensions:
+    source_service: source.workload.name | "unknown"
+    source_version: source.labels["version"] | "unknown"
+    destination_version: destination.labels["version"] | "unknown"
+  monitoredResourceType: '"UNSPECIFIED"'
+---
+# 这一指标代表从客户端到服务器的字节数
+apiVersion: "config.istio.io/v1alpha2"
+kind: metric
+metadata:
+  name: mongoreceivedbytes
+  namespace: default
+spec:
+  value: connection.received.bytes | 0 # uses a TCP-specific attribute
+  dimensions:
+    source_service: source.workload.name | "unknown"
+    source_version: source.labels["version"] | "unknown"
+    destination_version: destination.labels["version"] | "unknown"
+  monitoredResourceType: '"UNSPECIFIED"'
+---
+# 配置 Prometheus 的 Handler
+apiVersion: "config.istio.io/v1alpha2"
+kind: prometheus
+metadata:
+  name: mongohandler
+  namespace: default
+spec:
+  metrics:
+  - name: mongo_sent_bytes # Prometheus metric name
+    instance_name: mongosentbytes.metric.default # Mixer instance name (fully-qualified)
+    kind: COUNTER
+    label_names:
+    - source_service
+    - source_version
+    - destination_version
+  - name: mongo_received_bytes # Prometheus metric name
+    instance_name: mongoreceivedbytes.metric.default # Mixer instance name (fully-qualified)
+    kind: COUNTER
+    label_names:
+    - source_service
+    - source_version
+    - destination_version
+---
+# 这里定义一个 rule，把 metric 发送给 Prometheus handler
+apiVersion: "config.istio.io/v1alpha2"
+kind: rule
+metadata:
+  name: mongoprom
+  namespace: default
+spec:
+  match: context.protocol == "tcp"
+         && destination.service.host == "mongodb.default.svc.cluster.local"
+  actions:
+  - handler: mongohandler.prometheus
+    instances:
+    - mongoreceivedbytes.metric
+    - mongosentbytes.metric
