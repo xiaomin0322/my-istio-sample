@@ -86,7 +86,7 @@ kubectl delete -f  /root/istio-1.2.5/samples/bookinfo/platform/kube/bookinfo.yam
 
 uquote/jdk8-tomee1.7.3-plume
  
-for ((i=1; i<=200; i ++))
+for ((i=1; i<=400; i ++))
 do
 	 curl http://ip:31380/productpage
 done
@@ -139,7 +139,18 @@ curl -s -v  10.108.109.152:8081/sa/info
 
 find .|xargs grep -ri "mtls" -l 
 
+
+kubectl logs productpage-v1-84f77f8747-8zklx -c productpage
+
+
+kubectl edit svc prometheus -n istio-system
+
+
+
+http://ip:30333/dashboard/db/istio-mesh-dashboard
+
 ==============步骤======================
+0.搭建istio环境 （参考1.2.5踩坑计）
 1.mvn 打包
 2.打镜像 a b 服务就可以了
 docker build --build-arg JAR_FILE=service-a.jar -t menghot/service-a:0.0.1 .
@@ -152,11 +163,14 @@ kubectl apply -f bookinfo-gateway.yaml
 5.访问200次
 for ((i=1; i<=200; i ++))
 do
-	 curl http://10.1.104.231:31380/sa/info
+	 curl http://ip:31380/sa/info
 done
 
 6.看zipkin链路（开通zipkin）
 http://tracing.com:30081/zipkin
+
+7.执行指标采集yaml.看Prometheus,grafana相关指标监控
+
 
 ===========查看日志========================
 kubectl logs service-a-7779b55b9b-4qdv2  -c  service-a
