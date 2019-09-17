@@ -3,16 +3,16 @@
 2.hystrix断路器: DestinationRule （一起用）
 3.spring cloud sleuth + zipkin clinet : istio + spring cloud sleuth + restTemplate + （扩展） (代码里面还得连接zipkin还不如直接用zipkin)
 3.Grafana 应用http指标，tcp指标 : SideCar metrics  
-4.efk 通过自定义收集应用日志(用自己的一套)
+4.efk 通过自定义收集应用日志 (用自己的一套)
 
 ================1.2.5踩坑计==================
 1. helm安装裁坑。tiller 镜像拉不下来
 2./root/istio-1.2.5/install/kubernetes/helm/istio/charts/tracing/values.yaml 需要改镜像文件
-3.访问都配置成nodeprot:kubectl edit svc tracing -n istio-system
+3.访问都配置成nodeprot:开通nodPprot: Prometheus,tracing,grafana  |  kubectl edit svc tracing -n istio-system
 4.加入自己得配置时： upstream connect error or disconnect/reset before headers. reset reason: connection failure 
+解决：保证容器能够正常运行访问
 5.指标监控的坑：istio_double_request_count老是搜索不出来。原来是时差问istio_double_request_count [1d]就能搜索出来 
-修改宿主机 时区：https://my.oschina.net/xiaominmin/blog/3107111
-6.
+解决：修改宿主机 时区：https://my.oschina.net/xiaominmin/blog/3107111
 
 
 ====================istio===========================================
