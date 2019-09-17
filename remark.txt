@@ -10,7 +10,9 @@
 2./root/istio-1.2.5/install/kubernetes/helm/istio/charts/tracing/values.yaml 需要改镜像文件
 3.访问都配置成nodeprot:kubectl edit svc tracing -n istio-system
 4.加入自己得配置时： upstream connect error or disconnect/reset before headers. reset reason: connection failure 
-5.指标监控的坑：istio_double_request_count老是搜索不出来。原来是时差问istio_double_request_count [1d]就能搜索出来
+5.指标监控的坑：istio_double_request_count老是搜索不出来。原来是时差问istio_double_request_count [1d]就能搜索出来 
+修改宿主机 时区：https://my.oschina.net/xiaominmin/blog/3107111
+6.
 
 
 ====================istio===========================================
